@@ -1,10 +1,11 @@
 from django.shortcuts import render
+from .forms import ImageForm
 
 import numpy as np
 import cv2
 import pickle as pk
 
-root_path = '/Users/devasenan/Documents/conser-vision/conserVision/'
+root_path = '/Users/devasenan/Documents/conser-vision/conserVision/media/'
 
 def load_model(model_name):
     model = None
@@ -23,10 +24,19 @@ def read_image(img_name):
 
 # Create your views here.
 def dashboard(request):
-    cnn_model = load_model('cnn1_model.sav')
-    img = read_image('ZJ000004.jpg')
-    print(img.shape)
-    y_pred = cnn_model.predict(img)
-    return render(request, "dashboard/dashboard.html", {
-        'res': y_pred
+    form = ImageForm()
+    obj = None
+    y_pred = float()
+
+    if request.method == 'POST':
+        form = ImageForm(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.customSave(request.user) 
+        cnn_model = load_model('models/cnn1_model.sav')
+        img = read_image(str(obj.photo))
+        y_pred = cnn_model.predict(img)
+        print(y_pred)
+    return render(request, "dashboard/index.html", {
+            'form': form,
+            'prediction': y_pred,
     })
