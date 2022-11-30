@@ -35,12 +35,18 @@ def dashboard(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            obj = form.customSave(request.user) 
+            obj = form.customSave(request.user)
         img = read_image(str(obj.photo))
         y_pred = cnn_model.predict(img)
         print(y_pred)
         y_pred_label = classes[np.argmax(y_pred)]
+        return render(request, "dashboard/index.html", {
+            'status': 1,
+            'img': root_path+str(obj.photo),
+            'prediction': y_pred_label,
+        })
+
     return render(request, "dashboard/index.html", {
             'form': form,
-            'prediction': y_pred_label,
+            'status': 0
     })
