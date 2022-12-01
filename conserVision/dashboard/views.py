@@ -4,19 +4,22 @@ from .forms import ImageForm
 import numpy as np
 import cv2
 import pickle as pk
+from keras.models import load_model
 
-root_path = '/Users/devasenan/Documents/conser-vision/conserVision/media/'
+root_path = 'C:/Users/Karan/conser-vision/conserVision/media/'
+# root_path = '/Users/devasenan/Documents/conser-vision/conserVision/media/'
 classes = ['antelope_duiker','bird','blank','civet_genet','hog','leopard','monkey_prosimian','rodent']
 
-def load_model(model_name):
-    model = None
-    model_path = root_path+model_name
-    with open(model_path, 'rb') as model_sav:
-        model = pk.load(model_sav)
-        model_sav.close()
-    return model
-cnn_model = load_model('models/cnn1_model.sav')
+# def load_model(model_name):
+#     model = None
+#     model_path = root_path+model_name
+#     with open(model_path, 'rb') as model_sav:
+#         model = pk.load(model_sav)
+#         model_sav.close()
+#     return model
 
+# cnn_model = load_model('models/cnn1_model1.h5')
+cnn_model = load_model(root_path+'models/cnn1_model1.h5')
 
 def read_image(img_name):
     size = 128
