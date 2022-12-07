@@ -1,13 +1,15 @@
 from django.shortcuts import render
+from django.core.files.storage import FileSystemStorage
 from .forms import ImageForm
+from django.conf import settings
 
 import numpy as np
 import cv2
 import pickle as pk
 from keras.models import load_model
 
-root_path = 'C:/Users/Karan/conser-vision/conserVision/media/'
-# root_path = '/Users/devasenan/Documents/conser-vision/conserVision/media/'
+# root_path = 'C:/Users/Karan/conser-vision/conserVision/media/'
+root_path = '/Users/devasenan/Documents/conser-vision/conserVision/media/'
 classes = ['antelope_duiker','bird','blank','civet_genet','hog','leopard','monkey_prosimian','rodent']
 
 # def load_model(model_name):
@@ -37,15 +39,28 @@ def dashboard(request):
 
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            obj = form.customSave(request.user)
-        img = read_image(str(obj.photo))
+        print("files:",request.FILES)
+        upload = request.FILES['photo']
+        fss = FileSystemStorage(location=settings.MEDIA_ROOT+'/imgs/')
+        file = fss.save(upload.name, upload)
+        print('upload:', upload, 'file:', file)
+        file_url = fss.url(file)
+        print('url:',file_url)
+
+        # if form.is_valid():
+        #     obj = form.customSave(request.user)
+        #     print("obj:",obj)
+        # img = read_image(str(obj.photo))
+
+        img =read_image(file)
         y_pred = cnn_model.predict(img)
         print(y_pred)
         y_pred_label = classes[np.argmax(y_pred)]
+
         return render(request, "dashboard/index.html", {
             'status': 1,
             'img': root_path+str(obj.photo),
+            # 'img': file_url,
             'prediction': y_pred_label,
         })
 
