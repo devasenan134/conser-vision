@@ -24,6 +24,7 @@ classes = ['antelope_duiker','bird','blank','civet_genet','hog','leopard','monke
 cnn_model = load_model(root_path+'models/cnn1_model1.h5')
 
 def read_image(img_name):
+    print("from read_img:",img_name)
     size = 128
     img=cv2.imread(root_path+img_name)
     img = cv2.resize(img, (size, size))
@@ -41,7 +42,7 @@ def dashboard(request):
         form = ImageForm(request.POST, request.FILES)
         print("files:",request.FILES)
         upload = request.FILES['photo']
-        fss = FileSystemStorage(location=settings.MEDIA_ROOT+'/imgs/')
+        fss = FileSystemStorage()
         file = fss.save(upload.name, upload)
         print('upload:', upload, 'file:', file)
         file_url = fss.url(file)
@@ -52,7 +53,7 @@ def dashboard(request):
         #     print("obj:",obj)
         # img = read_image(str(obj.photo))
 
-        img =read_image(file)
+        img =read_image(file_url)
         y_pred = cnn_model.predict(img)
         print(y_pred)
         y_pred_label = classes[np.argmax(y_pred)]
