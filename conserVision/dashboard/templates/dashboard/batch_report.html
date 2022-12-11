@@ -1,0 +1,32 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="{% static 'css/indexstyles.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body>
+    <h2>Report for the {{batch_name}} batch</h2>
+
+    <h3>Bar Plot</h3>
+    
+
+    <table>
+        <tr>
+            <th>Img ID</th>
+            <th>Img Class</th>
+        </tr>
+        {% for name, val in predictions %}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{val}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <!-- <script src="{% static 'js/index_upload.js' %}"></script> -->
+</body>
+
+</html>

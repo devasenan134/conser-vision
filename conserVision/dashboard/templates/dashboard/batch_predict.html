@@ -9,22 +9,15 @@
 <body>
 
   <div class="wrapper">
-    {% if status == 0 %}
-      <header>Upload Files</header>
+      <header>Upload Folder</header>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input class="file-input" type="file" name="photo" accept="image/*" required="" id="id_photo">
+        <input class="file-input" type="text" name="batch_name">
+        <input class="file-input" type="file" name="files" multiple="true" webkitdirectory="true" directory="true" id="id_photo"/>
         <i class="fas fa-cloud-upload-alt"></i>
-        <p>Browse File to Upload</p>
+        <p>Browse Folder to Upload</p>
         <button type="submit">Upload</button>
       </form>
-    {% else %}
-      <img src="{{img}}" width="128" height="128">
-      <h3>Prediction: {{prediction}}</h3>
-      <a href="{% url 'dashboard:dashboard' %}">Go Back</a>
-      <section class="progress-area"></section>
-      <section class="uploaded-area"></section>
-    {% endif %}
   </div>
   <!-- <script src="{% static 'js/index_upload.js' %}"></script> -->
 </body>

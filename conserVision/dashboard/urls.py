@@ -5,5 +5,6 @@ from . import views
 
 app_name='dashboard'
 urlpatterns = [
-    path('', views.dashboard, name='dashboard')
+    path('', views.dashboard, name='dashboard'),
+    path('batch/', views.batch_predict, name='batch'),
 ]

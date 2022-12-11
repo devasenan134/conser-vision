@@ -1,4 +1,7 @@
 data/train_features/
 data/test_features/
 data/pickles/
+data/batches/
 models-tried/.ipynb_checkpoints/
+conserVision/media/batch/
+conserVision/media/imgs/
