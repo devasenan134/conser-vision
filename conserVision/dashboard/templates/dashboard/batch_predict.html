@@ -3,23 +3,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="stylesheet" href="{% static 'css/indexstyles.css' %}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ConserVision</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 <body>
 
-  <div class="wrapper">
-      <header>Upload Folder</header>
-      <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <input class="file-input" type="text" name="batch_name" placeholder="Batch Name">
-        <input class="file-input" type="file" name="files" multiple="true" webkitdirectory="true" directory="true" id="id_photo"/>
-        <i class="fas fa-cloud-upload-alt"></i>
-        <p>Browse Folder to Upload</p>
-        <button type="submit">Upload</button>
-      </form>
+  <div class="container">
+    <div class="card shadow p-3 mb-5 bg-body rounded" style="width: 18rem; padding: 100px;">
+      <div class="card-body">
+        <h5 class="card-title">Upload Folder</h5>
+        <!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> -->
+        <p class="card-text">
+          <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input class="file-input" type="text" name="batch_name" placeholder="Batch Name">
+          <input class="file-input" type="file" name="files" multiple="true" webkitdirectory="true" directory="true"
+            id="id_photo" />
+          <i class="fas fa-cloud-upload-alt"></i>
+          <p>Browse Folder to Upload</p>
+          <button type="submit">Upload</button>
+          </form>
+        </p>
+        <a href="{% url 'dashboard:dashboard' %}" class="card-link">Back</a>
+      </div>
+    </div>
   </div>
-  <!-- <script src="{% static 'js/index_upload.js' %}"></script> -->
 </body>
 </html>

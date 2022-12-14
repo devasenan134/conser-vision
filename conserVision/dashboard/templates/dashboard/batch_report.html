@@ -1,32 +1,44 @@
 {% load static %}
 
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 
 <head>
-    <link rel="stylesheet" href="{% static 'css/indexstyles.css' %}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ConserVision</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
 </head>
 
 <body>
-    <h2>Report for the {{batch_name}} batch</h2><br><br>
+    <div class="container" style="padding: 100px 0px">
+        <div class="alert alert-info shadow-sm p-3 mb-5 bg-body rounded" role="alert">
+            <h1>Report for the {{batch_name}} batch</h1>
+        </div>
 
-    <h3>Bar Plot</h3>
-    <img src='data:image/png;base64,{{ plot_fig }}' class="img-fluid" alt="Responsive image"><br>
-    <table>
-        <tr>
-            <th>Img ID</th>
-            <th>Img Class</th>
-        </tr>
-        {% for name, val in predictions %}
-        <tr>
-            <td>{{name}}</td>
-            <td>{{val}}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="{% url 'dashboard:save_pdf' %}">Download as PDF</a>
-    <!-- <script src="{% static 'js/index_upload.js' %}"></script> -->
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <img src='data:image/png;base64,{{ plot_fig }}' class="img-fluid" alt="Responsive image"><br>
+        </div>
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <table class="table">
+                <tr>
+                    <th scope="col">Img ID</th>
+                    <th scope="col">Img Class</th>  
+                </tr>
+                {% for name, val in predictions %}
+                <tr>
+                    <td>{{name}}</td>
+                    <td>{{val}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        
+        <a href="{% url 'dashboard:save_pdf' %}"><button type="button" class="btn btn-primary">Download as PDF</button></a><br>
+        <a href="{% url 'dashboard:batch' %}">Back</a>
+    </div>
+
 </body>
 
 </html>
