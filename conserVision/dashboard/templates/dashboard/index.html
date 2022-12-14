@@ -18,6 +18,7 @@
         <p>Browse File to Upload</p>
         <button type="submit">Upload</button>
       </form>
+      <a href="{% url 'dashboard:batch' %}">Upload as batch</a>
     {% else %}
       <img src="{{img}}" width="128" height="128">
       <h3>Prediction: {{prediction}}</h3>

@@ -12,7 +12,8 @@
       <header>Upload Folder</header>
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <input class="file-input" type="text" name="batch_name">
+        
+        <input class="file-input" type="text" name="batch_name" placeholder="Batch Name">
         <input class="file-input" type="file" name="files" multiple="true" webkitdirectory="true" directory="true" id="id_photo"/>
         <i class="fas fa-cloud-upload-alt"></i>
         <p>Browse Folder to Upload</p>

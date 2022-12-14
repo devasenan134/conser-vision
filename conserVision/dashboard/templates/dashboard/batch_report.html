@@ -9,11 +9,10 @@
 </head>
 
 <body>
-    <h2>Report for the {{batch_name}} batch</h2>
+    <h2>Report for the {{batch_name}} batch</h2><br><br>
 
     <h3>Bar Plot</h3>
-    
-
+    <img src='data:image/png;base64,{{ plot_fig }}' class="img-fluid" alt="Responsive image"><br>
     <table>
         <tr>
             <th>Img ID</th>
@@ -26,6 +25,7 @@
         </tr>
         {% endfor %}
     </table>
+    <a href="{% url 'dashboard:save_pdf' %}">Download as PDF</a>
     <!-- <script src="{% static 'js/index_upload.js' %}"></script> -->
 </body>
 

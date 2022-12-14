@@ -1,36 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse, reverse, redirect
 from django.core.files.storage import FileSystemStorage
 from .forms import ImageForm
 from django.conf import settings
 
-import numpy as np
-import cv2
-import pickle as pk
-from keras.models import load_model
-from datetime import datetime
-import seaborn as sns
 
-# root_path = 'C:/Users/Karan/conser-vision/conserVision/media/'
-root_path = '/Users/devasenan/Documents/conser-vision/conserVision/media/'
-cnn_model = load_model(root_path+'models/cnn1_model1.h5')
-
-
-def read_image(img_name):
-    print("from read_img:",img_name)
-    size = 128
-    img=cv2.imread('/Users/devasenan/Documents/conser-vision/conserVision'+img_name)
-    img = cv2.resize(img, (size, size))
-    img = img/255
-    return np.array([img])
-
-
-def make_prediction(file_url):
-    classes = ['antelope_duiker','bird','blank','civet_genet','hog','leopard','monkey_prosimian','rodent']
-    img=read_image(file_url)
-    y_pred = cnn_model.predict(img)
-    # print(y_pred)
-    y_pred_label = classes[np.argmax(y_pred)]
-    return y_pred_label
+from django.views.generic import View
+from .utils import make_prediction, rename_file, get_upload_dt, bar_plot, html_to_pdf
 
 
 # Create your views here.
@@ -67,28 +42,10 @@ def dashboard(request):
     })
 
 
-def get_upload_dt():
-    today = datetime.now()
-    date = ''.join(map(str, [today.year, today.month, today.day]))
-    time = ''.join(map(str, [today.hour, today.minute, today.second]))
-    return 'dt'.join([date, time])
-
-
-def rename_file(file_name, dt):
-    name, ext = file_name.split('.')
-    new_name = '.'.join([name+dt, ext])
-    return new_name
-
-def bar_plot(predictions):
-    class_dict = {}
-    for img, cls in predictions:
-        class_dict[cls] = class_dict.get(cls, 0) + 1
-    print(class_dict)   
-    sns.barplot(x='classes', y='count', data=class_dict)
-
-
+report_context = {}
 # Create your views here.
 def batch_predict(request):
+    global report_context
 
     if request.method == 'POST':
         print(request.POST)
@@ -106,13 +63,24 @@ def batch_predict(request):
             file_label = make_prediction(file_url)
             predictions.append([file.name, file_label])
 
-        plot = bar_plot(predictions)
+        fig = bar_plot(predictions)
 
-        return render(request, 'dashboard/batch_report.html', {
+        report_context = {
             'predictions': predictions,
             'batch_name': batch_name,
-        })
+            'plot_fig': fig,
+        }
+        return render(request, 'dashboard/batch_report.html', report_context)
 
     return render(request, "dashboard/batch_predict.html", {
         'status': 0,
     })
+
+
+class GeneratePdf(View):
+    def get(self, request, *args, **kwargs):
+        # getting the template
+        global report_context
+        pdf = html_to_pdf('dashboard/batch_report.html', report_context)        
+         # rendering the template
+        return HttpResponse(pdf, content_type='application/pdf')
