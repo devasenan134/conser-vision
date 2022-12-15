@@ -55,7 +55,7 @@ def rename_file(file_name, dt):
 
 def bar_plot(predictions):
     preds = np.array(predictions)
-    print(preds)
+    print(preds[:, 1])
     count_plot = sns.countplot(x=preds[:, 1])
     file = BytesIO()
     count_plot.figure.savefig(file, format="png")
