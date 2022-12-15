@@ -81,6 +81,6 @@ class GeneratePdf(View):
     def get(self, request, *args, **kwargs):
         # getting the template
         global report_context
-        pdf = html_to_pdf('dashboard/batch_report.html', report_context)        
+        pdf = html_to_pdf('dashboard/pdf_report.html', report_context)        
          # rendering the template
         return HttpResponse(pdf, content_type='application/pdf')

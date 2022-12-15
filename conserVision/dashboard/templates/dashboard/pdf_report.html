@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>ConserVision</title>
+    </head>
+    <style type="text/css">
+        * {
+            font-family: 'Open Sans'
+        }
+        h1 {
+            font-size: 50px;
+        }
+        th {
+            font-size: 25px;
+        }
+        td {
+            font-size: 20px;
+        }
+        .table {
+            margin: 20px 100px;
+        }
+    </style>
+    <body>
+        <div class="container">
+            <h1>Report for the {{batch_name}} batch</h1>
+            <img src='data:image/png;base64,{{ plot_fig }}' class="img-fluid" alt="Responsive image"><br><br>
+            <div class="table">
+                <table>
+                    <tr>
+                        <th>Img ID</th>
+                        <th>Img Class</th>
+                    </tr>
+                    {% for name, val in predictions %}
+                    <tr>
+                        <td>{{name}}</td>
+                        <td>{{val}}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
